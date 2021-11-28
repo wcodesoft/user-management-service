@@ -1,5 +1,6 @@
 package org.wcode.usermanagement.services
 
+import com.google.protobuf.Empty
 import io.grpc.stub.StreamObserver
 import io.quarkus.grpc.GrpcService
 import org.wcode.usermanagement.proto.UserManagementServiceGrpc
@@ -20,6 +21,16 @@ class UserService : UserManagementServiceGrpc.UserManagementServiceImplBase() {
         responseObserver.apply {
             val response = Response.newBuilder().apply {
                 success = true
+            }.build()
+            onNext(response)
+            onCompleted()
+        }
+    }
+
+    override fun getAllUsers(request: Empty?, responseObserver: StreamObserver<GetAllUsersResponse>) {
+        responseObserver.apply {
+            val response = GetAllUsersResponse.newBuilder().apply {
+                addAllUsers(users.map { it.value })
             }.build()
             onNext(response)
             onCompleted()

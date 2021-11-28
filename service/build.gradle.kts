@@ -22,7 +22,7 @@ dependencies {
     implementation("io.quarkus:quarkus-grpc")
     implementation("io.quarkus:quarkus-jdbc-h2")
 
-    implementation("org.wcode.usermanagement:proto:0.0.1")
+    implementation("org.wcode.usermanagement:proto:0.0.2")
 
     testImplementation("io.quarkus:quarkus-junit5")
     testImplementation("io.rest-assured:rest-assured")

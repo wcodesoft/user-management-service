@@ -8,6 +8,7 @@ val grpcKotlinVersion = "1.2.0"
 plugins {
     kotlin("jvm") version "1.5.31"
     id("com.google.protobuf") version "0.8.18"
+    `maven-publish`
 }
 
 group = "org.wcode.usermanagement"
@@ -53,5 +54,23 @@ java {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
+    }
+}
+
+publishing{
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/wcodesoft/user-management-service")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            from(components["java"])
+        }
     }
 }

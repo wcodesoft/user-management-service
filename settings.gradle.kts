@@ -6,6 +6,19 @@
  * Detailed information about configuring a multi-project build in Gradle can be found
  * in the user manual at https://docs.gradle.org/7.3/userguide/multi_project_builds.html
  */
+pluginManagement {
+    val quarkusPluginVersion: String by settings
+    val quarkusPluginId: String by settings
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    plugins {
+        id(quarkusPluginId) version quarkusPluginVersion
+    }
+}
 
 rootProject.name = "user-management-service"
-include("proto")
+include("proto", "service")

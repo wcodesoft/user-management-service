@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package org.wcode.usermanagement.proto;
+
+message User {
+  string username = 1;
+  optional string firstName = 2;
+  optional string lastName = 3;
+  optional int32 age = 4;
+}
+
+message Response {
+  bool success = 1;
+}
+
+service UserManagementService {
+  rpc CreateUser(User) returns (Response);
+}

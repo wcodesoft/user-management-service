@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 package org.wcode.usermanagement.proto;
 
 message User {
@@ -13,6 +15,12 @@ message Response {
   bool success = 1;
 }
 
+message GetAllUsersResponse {
+  repeated User users = 1;
+}
+
 service UserManagementService {
   rpc CreateUser(User) returns (Response);
+
+  rpc GetAllUsers(google.protobuf.Empty) returns (GetAllUsersResponse);
 }

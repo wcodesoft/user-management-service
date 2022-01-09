@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package org.wcode.proto.usermanagement;
-// option go_package = "github.com/wcodesoft/user-management-service/proto";
+option go_package = "github.com/wcodesoft/user-management-service/proto";
 
 message User {
     string firstName = 1;

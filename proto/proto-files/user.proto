@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package org.wcode.proto.usermanagement;
+// option go_package = "github.com/wcodesoft/user-management-service/proto";
+
+message User {
+    string firstName = 1;
+    string secondName = 2;
+}
+
+message Response {
+    bool success = 1;
+}
+
+service UserManagement{
+    rpc CreateUser(User) returns (Response);
+}

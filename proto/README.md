@@ -1,39 +1,33 @@
-## User Management proto package
+# Protos
 
-This package holds the proto definition necessary to connect to the 
-service and transport data using gRPC.
+All the protos definitions for the service implemented
 
-To use it on ``build.gradle.kts`` use it:
+## Dependencies
+
+First is necessary to install dependencies using the pip command:
 
 ```bash
-implementation("org.wcode.usermanagement:proto:0.0.1")
+pip install -r requirements.txt
 ```
 
-### Messages
+## Available commands
 
-```proto
-message User {
-  string username = 1;
-  optional string firstName = 2;
-  optional string lastName = 3;
-  optional int32 age = 4;
-}
+Execute the following commands on the same folder holding the `builder.py` file
 
-message Response {
-  bool success = 1;
-}
+### Setup
+
+```bash
+python builder.py setup
 ```
 
-### Services
+### Build
 
-```proto
-rpc CreateUser(User) returns (Response);
+```bash
+python builder.py build
 ```
 
-### Usage
+### Clean
 
-The package is being deployed on GitHub Registry. To use it's necessary
-to define two environment variables on your system:
-
-* GITHUB_ACTOR: username of the user trying to download the package
-* GITHUB_TOKEN: access token created with at least read package permission
+```bash
+python builder.py clean
+```

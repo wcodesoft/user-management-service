@@ -40,6 +40,12 @@ def get_platform() -> str:
 
 
 def download_file(url: str):
+    """
+    Download file from a url.
+
+    Args:
+        url address from the file to be downloaded.
+    """
     r = requests.get(url)
     filename = url.split("/")[-1]
     open(filename, "wb").write(r.content)

@@ -40,8 +40,11 @@ def clean():
     Clean the folder restoring it to the way it was before the setup and genration
     """
     click.echo("Cleaning files.")
-    lib_build.clean_build()
-    lib_setup.clean_setup()
+    try:
+        lib_build.clean_build()
+        lib_setup.clean_setup()
+    except Exception as e:
+        click.echo(f"Error: {e}")
 
 
 if __name__ == "__main__":

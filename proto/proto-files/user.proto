@@ -1,17 +1,30 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
+
 package org.wcode.proto.usermanagement;
 option go_package = "github.com/wcodesoft/user-management-service/grpc/go/user-management.proto";
 
 message User {
-    string firstName = 1;
-    string secondName = 2;
+    string username = 1;
+    optional string firstName = 2;
+    optional string secondName = 3;
 }
 
 message Response {
     bool success = 1;
 }
 
+message GetUsersResponse {
+    repeated User users = 1;
+}
+
 service UserManagement{
+
+    // Create a new User entry on the service.
     rpc CreateUser(User) returns (Response);
+    
+    // Get all users from service.
+    rpc GetUsers(google.protobuf.Empty) returns (GetUsersResponse);
 }

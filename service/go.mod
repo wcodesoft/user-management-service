@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/wcodesoft/user-management-service/grpc/go/user-management.proto v0.0.0-20220116184912-cc0b34db1af0
 	google.golang.org/grpc v1.43.0
+	google.golang.org/protobuf v1.27.1
 )
 
 require (
@@ -13,5 +14,4 @@ require (
 	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220114231437-d2e6a121cae0 // indirect
-	google.golang.org/protobuf v1.27.1 // indirect
 )

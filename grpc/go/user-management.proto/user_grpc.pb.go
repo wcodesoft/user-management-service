@@ -25,6 +25,10 @@ const _ = grpc.SupportPackageIsVersion7
 type UserManagementClient interface {
 	// Create a new User entry on the service.
 	CreateUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*Response, error)
+	// Update user by the username if they exist in the system.
+	UpdateUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*Response, error)
+	// Try to delete user if it exists on the system.
+	DeleteUser(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*Response, error)
 	// Get all users from service.
 	GetUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUsersResponse, error)
 }
@@ -46,6 +50,24 @@ func (c *userManagementClient) CreateUser(ctx context.Context, in *User, opts ..
 	return out, nil
 }
 
+func (c *userManagementClient) UpdateUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/org.wcode.proto.usermanagement.UserManagement/UpdateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userManagementClient) DeleteUser(ctx context.Context, in *RequestId, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/org.wcode.proto.usermanagement.UserManagement/DeleteUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userManagementClient) GetUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUsersResponse, error) {
 	out := new(GetUsersResponse)
 	err := c.cc.Invoke(ctx, "/org.wcode.proto.usermanagement.UserManagement/GetUsers", in, out, opts...)
@@ -61,6 +83,10 @@ func (c *userManagementClient) GetUsers(ctx context.Context, in *emptypb.Empty, 
 type UserManagementServer interface {
 	// Create a new User entry on the service.
 	CreateUser(context.Context, *User) (*Response, error)
+	// Update user by the username if they exist in the system.
+	UpdateUser(context.Context, *User) (*Response, error)
+	// Try to delete user if it exists on the system.
+	DeleteUser(context.Context, *RequestId) (*Response, error)
 	// Get all users from service.
 	GetUsers(context.Context, *emptypb.Empty) (*GetUsersResponse, error)
 	mustEmbedUnimplementedUserManagementServer()
@@ -72,6 +98,12 @@ type UnimplementedUserManagementServer struct {
 
 func (UnimplementedUserManagementServer) CreateUser(context.Context, *User) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedUserManagementServer) UpdateUser(context.Context, *User) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedUserManagementServer) DeleteUser(context.Context, *RequestId) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserManagementServer) GetUsers(context.Context, *emptypb.Empty) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
@@ -107,6 +139,42 @@ func _UserManagement_CreateUser_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserManagement_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(User)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManagementServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/org.wcode.proto.usermanagement.UserManagement/UpdateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManagementServer).UpdateUser(ctx, req.(*User))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserManagement_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RequestId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManagementServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/org.wcode.proto.usermanagement.UserManagement/DeleteUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManagementServer).DeleteUser(ctx, req.(*RequestId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserManagement_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
@@ -135,6 +203,14 @@ var UserManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateUser",
 			Handler:    _UserManagement_CreateUser_Handler,
+		},
+		{
+			MethodName: "UpdateUser",
+			Handler:    _UserManagement_UpdateUser_Handler,
+		},
+		{
+			MethodName: "DeleteUser",
+			Handler:    _UserManagement_DeleteUser_Handler,
 		},
 		{
 			MethodName: "GetUsers",

@@ -6,10 +6,18 @@ import "google/protobuf/empty.proto";
 package org.wcode.proto.usermanagement;
 option go_package = "github.com/wcodesoft/user-management-service/grpc/go/user-management.proto";
 
+/* 
+User definition
+Next ID: 4
+*/
 message User {
     string username = 1;
     optional string firstName = 2;
-    optional string secondName = 3;
+    optional string lastName = 3;
+}
+
+message RequestId {
+    string username = 1;
 }
 
 message Response {
@@ -24,6 +32,12 @@ service UserManagement{
 
     // Create a new User entry on the service.
     rpc CreateUser(User) returns (Response);
+
+    // Update user by the username if they exist in the system.
+    rpc UpdateUser(User) returns (Response);
+
+    // Try to delete user if it exists on the system.
+    rpc DeleteUser(RequestId) returns (Response);
     
     // Get all users from service.
     rpc GetUsers(google.protobuf.Empty) returns (GetUsersResponse);

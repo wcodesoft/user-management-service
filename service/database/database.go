@@ -1,27 +1,24 @@
 package database
 
-import "container/list"
-
 type Database struct {
-	memoryDatabase *list.List
+	memoryDatabase []user
 }
 
 type user struct {
-	firstName  string
-	secondName string
+	Username   string
+	FirstName  string
+	SecondName string
 }
 
 func NewDatabase() Database {
-	return Database{
-		memoryDatabase: list.New(),
-	}
+	return Database{}
 }
 
-func (d *Database) AddUser(firstName string, secondName string) bool {
-	d.memoryDatabase.PushBack(user{firstName, secondName})
+func (d *Database) AddUser(username string, firstName string, secondName string) bool {
+	d.memoryDatabase = append(d.memoryDatabase, user{username, firstName, secondName})
 	return true
 }
 
-func (d *Database) GetUsers() *list.List {
+func (d *Database) GetUsers() []user {
 	return d.memoryDatabase
 }

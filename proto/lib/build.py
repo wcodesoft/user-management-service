@@ -40,8 +40,8 @@ def build_go():
         export PATH="$PATH:$(go env GOPATH)/bin"
 
         {PROTOC_BIN_FOLDER}/protoc \
-            --go_out={GO_FOLDER} \
-            --go-grpc_out={GO_FOLDER} \
+            --go_out={GO_FOLDER} --go_opt=paths=source_relative \
+            --go-grpc_out={GO_FOLDER} --go-grpc_opt=paths=source_relative \
             proto-files/user.proto
         """
     )
@@ -49,9 +49,11 @@ def build_go():
     cwd = os.getcwd()
 
     # Change the current working directory.
-    os.chdir(f"{os.path.split(cwd)[0]}/grpc/go/user-management.proto")
+    os.chdir(f"{os.path.split(cwd)[0]}/grpc/go/proto-files")
 
-    os.system("go mod init user-management.proto")
+    os.system(
+        "go mod init github.com/wcodesoft/user-management-service/grpc/go/user-management.proto"
+    )
     os.system("go mod tidy")
 
     # Go back to previous directory.
@@ -79,6 +81,7 @@ def build_kotlin():
 
 
 def build():
+    """Build a module for all supported languages."""
     if not folder_exists(PROTOC_BIN_FOLDER):
         raise Exception("Run setup before building the protos")
 

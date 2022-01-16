@@ -52,6 +52,11 @@ def download_file(url: str):
 
 
 def setup():
+    """Initialize all necessary files.
+
+    This will download and install all necessary files to build the libraries
+    for Go and Kotlin.
+    """
     system = get_platform()
     filename = f"protoc-{PROTO_VERSION}-{system}-x86_64"
     zipFileName = f"{filename}.zip"

@@ -1,4 +1,4 @@
-module user-management.proto
+module github.com/wcodesoft/user-management-service/grpc/go/user-management.proto
 
 go 1.17
 

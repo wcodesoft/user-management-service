@@ -5,7 +5,7 @@ import (
 	"net"
 	"service/usermanagement/definitions"
 
-	usermanagement "../grpc/go/user-management.proto"
+	usermanagement "github.com/wcodesoft/user-management-service/grpc/go/user-management.proto"
 	"google.golang.org/grpc"
 )
 

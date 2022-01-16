@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 	"net"
+	"service/usermanagement/definitions"
 
-	usermanagement "../grpc/go/user-management.proto/"
-	"./definitions/"
+	usermanagement "../grpc/go/user-management.proto"
 	"google.golang.org/grpc"
 )
 

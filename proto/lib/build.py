@@ -46,19 +46,16 @@ def build_go():
         """
     )
 
-    with open(f"{GO_FOLDER}/user-management.proto/go.mod", "w") as go_mod:
-        go_mod.write(
-            """module usermanagement.proto
+    cwd = os.getcwd()
 
-go 1.17
+    # Change the current working directory.
+    os.chdir(f"{os.path.split(cwd)[0]}/grpc/go/user-management.proto")
 
-require (
-	github.com/golang/protobuf v1.5.0
-	google.golang.org/grpc v1.43.0
-	google.golang.org/protobuf v1.27.1
-)
-        """
-        )
+    os.system("go mod init user-management.proto")
+    os.system("go mod tidy")
+
+    # Go back to previous directory.
+    os.chdir(cwd)
 
 
 def build_kotlin():
@@ -78,20 +75,7 @@ def build_kotlin():
         """
     )
 
-    meta_inf_folder = f"{KOTLIN_FOLDER}/META-INF"
-
-    os.mkdir(meta_inf_folder)
-    with open(f"{meta_inf_folder}/MANIFEST.MF", "w") as manifest_file:
-        manifest_file.write(
-            """Manifest-Version: 1.0
-        Class-Path: lib-user-management-proto.jar
-        Created-By: 0.0.3 (Wcode)
-        """
-        )
-
-    os.system(
-        f"jar cmvf {KOTLIN_FOLDER}/META-INF/MANIFEST.MF lib-user-management-proto.jar -C {KOTLIN_FOLDER} ."
-    )
+    os.system(f"jar cvf lib-user-management-proto.jar -C {KOTLIN_FOLDER} .")
 
 
 def build():
@@ -99,8 +83,8 @@ def build():
         raise Exception("Run setup before building the protos")
 
     create_clean_folder(GRPC_FOLDER)
-    build_go()
     build_kotlin()
+    build_go()
 
 
 def clean_build():

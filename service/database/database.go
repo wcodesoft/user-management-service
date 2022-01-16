@@ -21,3 +21,7 @@ func (d *Database) AddUser(firstName string, secondName string) bool {
 	d.memoryDatabase.PushBack(user{firstName, secondName})
 	return true
 }
+
+func (d *Database) GetUsers() *list.List {
+	return d.memoryDatabase
+}

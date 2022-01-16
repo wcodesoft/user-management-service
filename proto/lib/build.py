@@ -48,8 +48,13 @@ def build_go():
 
     cwd = os.getcwd()
 
+    os.rename(
+        f"{os.path.split(cwd)[0]}/grpc/go/proto-files",
+        f"{os.path.split(cwd)[0]}/grpc/go/usermanagement.proto",
+    )
+
     # Change the current working directory.
-    os.chdir(f"{os.path.split(cwd)[0]}/grpc/go/proto-files")
+    os.chdir(f"{os.path.split(cwd)[0]}/grpc/go/usermanagement.proto")
 
     os.system(
         "go mod init github.com/wcodesoft/user-management-service/grpc/go/user-management.proto"

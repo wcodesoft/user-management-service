@@ -5,12 +5,12 @@ import (
 	"net"
 	"service/routes"
 
-	usermanagement "github.com/wcodesoft/user-management-service/grpc/go/user-management.proto"
+	uManagement "github.com/wcodesoft/user-management-service/grpc/go/user-management.proto"
 	"google.golang.org/grpc"
 )
 
 func main() {
-	port := ":9001"
+	port := ":9000"
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("Failed to listen: %v", err)
@@ -20,7 +20,7 @@ func main() {
 
 	gRPCServer := grpc.NewServer()
 
-	usermanagement.RegisterUserManagementServer(gRPCServer, routes.NewRouteServer())
+	uManagement.RegisterUserManagementServer(gRPCServer, routes.NewRouteServer())
 
 	if err := gRPCServer.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)

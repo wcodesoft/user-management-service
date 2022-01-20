@@ -3,7 +3,7 @@ module service
 go 1.17
 
 require (
-	github.com/wcodesoft/user-management-service/grpc/go/user-management.proto v0.0.0-20220116184912-cc0b34db1af0
+	github.com/wcodesoft/user-management-service/grpc/go/user-management.proto v0.0.0-20220116232709-17487c730313
 	google.golang.org/grpc v1.43.0
 	google.golang.org/protobuf v1.27.1
 )

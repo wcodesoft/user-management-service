@@ -18,7 +18,7 @@ type User struct {
 }
 
 func NewDatabase() Database {
-	db, err := gorm.Open(sqlite.Open("local.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to database.")
 	}

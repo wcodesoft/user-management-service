@@ -88,7 +88,7 @@ def build_kotlin():
 def build():
     """Build a module for all supported languages."""
     if not folder_exists(PROTOC_BIN_FOLDER):
-        raise Exception("Run setup before building the protos")
+        raise FileNotFoundError("Run setup before building the protos")
 
     create_clean_folder(GRPC_FOLDER)
     build_kotlin()

@@ -11,9 +11,6 @@ KOTLIN_GRPC_FILE = "protoc-gen-grpc-kotlin-1.2.0-jdk7.jar"
 KOTLIN_GRPC_URL = f"https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-kotlin/1.2.0/{KOTLIN_GRPC_FILE}"
 
 
-from zipfile import ZipFile, ZipInfo
-
-
 class ZipFileWithPermissions(ZipFile):
     """Custom ZipFile class handling file permissions."""
 
@@ -36,7 +33,7 @@ def get_platform() -> str:
     elif system == "Darwin":
         return "osx"
     else:
-        raise Exception("OS not supported!")
+        raise SystemError("OS not supported!")
 
 
 def download_file(url: str):
@@ -59,13 +56,13 @@ def setup():
     """
     system = get_platform()
     filename = f"protoc-{PROTO_VERSION}-{system}-x86_64"
-    zipFileName = f"{filename}.zip"
-    url = f"{PB_REL}/download/v{PROTO_VERSION}/{zipFileName}"
+    zip_file_name = f"{filename}.zip"
+    url = f"{PB_REL}/download/v{PROTO_VERSION}/{zip_file_name}"
     download_file(url)
-    with ZipFileWithPermissions(zipFileName, "r") as zip_ref:
+    with ZipFileWithPermissions(zip_file_name, "r") as zip_ref:
         zip_ref.extractall("protobin")
 
-    os.remove(zipFileName)
+    os.remove(zip_file_name)
 
     os.system("go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest")
     os.system("go install google.golang.org/protobuf/cmd/protoc-gen-go@latest")

@@ -12,7 +12,7 @@ type Database struct {
 
 type User struct {
 	gorm.Model
-	Username  string
+	Username  string `gorm:"primaryKey"`
 	FirstName string
 	LastName  string
 }
@@ -26,6 +26,11 @@ func NewDatabase() Database {
 	return Database{
 		database: db,
 	}
+}
+
+func (d *Database) CloseDatabase() {
+	db, _ := d.database.DB()
+	defer db.Close()
 }
 
 func (d *Database) AddUser(username string, firstName string, lastName string) bool {

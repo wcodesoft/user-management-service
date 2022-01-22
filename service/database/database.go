@@ -1,18 +1,30 @@
 package database
 
+import (
+	"errors"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+)
+
 type Database struct {
-	memoryDatabase map[string]user
+	database *gorm.DB
 }
 
-type user struct {
+type User struct {
+	gorm.Model
 	Username  string
 	FirstName string
 	LastName  string
 }
 
 func NewDatabase() Database {
+	db, err := gorm.Open(sqlite.Open("local.db"), &gorm.Config{})
+	if err != nil {
+		panic("Failed to connect to database.")
+	}
+	db.AutoMigrate(&User{})
 	return Database{
-		memoryDatabase: make(map[string]user),
+		database: db,
 	}
 }
 
@@ -20,38 +32,40 @@ func (d *Database) AddUser(username string, firstName string, lastName string) b
 	if d.GetUser(username) != nil {
 		return false
 	}
-	d.memoryDatabase[username] = user{username, firstName, lastName}
-	return true
+	error := d.database.Create(&User{Username: username, FirstName: firstName, LastName: lastName}).Error
+	return !errors.Is(error, gorm.ErrRecordNotFound)
 }
 
 func (d *Database) UpdateUser(username string, firstName string, lastName string) bool {
-	if d.GetUser(username) == nil {
+	var user = d.GetUser(username)
+	if user == nil {
 		return false
 	}
-	d.memoryDatabase[username] = user{username, firstName, lastName}
-	return true
+	error := d.database.Model(&user).Updates(User{Username: username, FirstName: firstName, LastName: lastName}).Error
+	return !errors.Is(error, gorm.ErrRecordNotFound)
 }
 
 func (d *Database) DeleteUser(username string) bool {
-	if d.GetUser(username) == nil {
+	var user = d.GetUser(username)
+	if user == nil {
 		return false
 	}
-	delete(d.memoryDatabase, username)
-	return true
+	error := d.database.Delete(&user).Error
+	return !errors.Is(error, gorm.ErrRecordNotFound)
 }
 
-func (d *Database) GetUser(username string) *user {
-	if val, ok := d.memoryDatabase[username]; ok {
-		return &val
-	} else {
+func (d *Database) GetUser(username string) *User {
+	var user User
+	error := d.database.First(&user, "username = ?", username).Error
+	if errors.Is(error, gorm.ErrRecordNotFound) {
 		return nil
+	} else {
+		return &user
 	}
 }
 
-func (d *Database) GetUsers() []user {
-	var l []user
-	for _, v := range d.memoryDatabase {
-		l = append(l, v)
-	}
+func (d *Database) GetUsers() []User {
+	var l []User
+	d.database.Find(&l)
 	return l
 }

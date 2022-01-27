@@ -14,9 +14,9 @@ type routeServer struct {
 	database database.Database
 }
 
-func NewRouteServer() *routeServer {
+func NewRouteServer(database database.Database) *routeServer {
 	s := &routeServer{
-		database: database.NewDatabase(),
+		database: database,
 	}
 	return s
 }

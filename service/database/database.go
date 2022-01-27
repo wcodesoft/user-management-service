@@ -7,7 +7,7 @@ import (
 )
 
 type Database struct {
-	database *gorm.DB
+	Database *gorm.DB
 }
 
 type User struct {
@@ -24,12 +24,12 @@ func NewDatabase() Database {
 	}
 	db.AutoMigrate(&User{})
 	return Database{
-		database: db,
+		Database: db,
 	}
 }
 
 func (d *Database) CloseDatabase() {
-	db, _ := d.database.DB()
+	db, _ := d.Database.DB()
 	defer db.Close()
 }
 
@@ -37,8 +37,8 @@ func (d *Database) AddUser(username string, firstName string, lastName string) b
 	if d.GetUser(username) != nil {
 		return false
 	}
-	error := d.database.Create(&User{Username: username, FirstName: firstName, LastName: lastName}).Error
-	return !errors.Is(error, gorm.ErrRecordNotFound)
+	err := d.Database.Create(&User{Username: username, FirstName: firstName, LastName: lastName}).Error
+	return !errors.Is(err, gorm.ErrRecordNotFound)
 }
 
 func (d *Database) UpdateUser(username string, firstName string, lastName string) bool {
@@ -46,8 +46,8 @@ func (d *Database) UpdateUser(username string, firstName string, lastName string
 	if user == nil {
 		return false
 	}
-	error := d.database.Model(&user).Updates(User{Username: username, FirstName: firstName, LastName: lastName}).Error
-	return !errors.Is(error, gorm.ErrRecordNotFound)
+	err := d.Database.Model(&user).Updates(User{Username: username, FirstName: firstName, LastName: lastName}).Error
+	return !errors.Is(err, gorm.ErrRecordNotFound)
 }
 
 func (d *Database) DeleteUser(username string) bool {
@@ -55,14 +55,14 @@ func (d *Database) DeleteUser(username string) bool {
 	if user == nil {
 		return false
 	}
-	error := d.database.Delete(&user).Error
-	return !errors.Is(error, gorm.ErrRecordNotFound)
+	err := d.Database.Delete(&user).Error
+	return !errors.Is(err, gorm.ErrRecordNotFound)
 }
 
 func (d *Database) GetUser(username string) *User {
 	var user User
-	error := d.database.First(&user, "username = ?", username).Error
-	if errors.Is(error, gorm.ErrRecordNotFound) {
+	err := d.Database.First(&user, "username = ?", username).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil
 	} else {
 		return &user
@@ -71,6 +71,6 @@ func (d *Database) GetUser(username string) *User {
 
 func (d *Database) GetUsers() []User {
 	var l []User
-	d.database.Find(&l)
+	d.Database.Find(&l)
 	return l
 }

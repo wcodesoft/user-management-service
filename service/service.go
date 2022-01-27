@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net"
+	"service/database"
 	"service/routes"
 
 	uManagement "github.com/wcodesoft/user-management-service/grpc/go/user-management.proto"
@@ -20,7 +21,8 @@ func main() {
 
 	gRPCServer := grpc.NewServer()
 
-	uManagement.RegisterUserManagementServer(gRPCServer, routes.NewRouteServer())
+	db := database.NewDatabase()
+	uManagement.RegisterUserManagementServer(gRPCServer, routes.NewRouteServer(db))
 
 	if err := gRPCServer.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve: %v", err)

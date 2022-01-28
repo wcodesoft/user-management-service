@@ -5,10 +5,9 @@ import os
 import shutil
 
 PROTOC_BIN_FOLDER = "./protobin"
+BUILD_FOLDER = "./build"
 PROTO_VERSION = "3.19.2"
 PB_REL = "https://github.com/protocolbuffers/protobuf/releases"
-KOTLIN_GRPC_FILE = "protoc-gen-grpc-kotlin-1.2.0-jdk7.jar"
-KOTLIN_GRPC_URL = f"https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-kotlin/1.2.0/{KOTLIN_GRPC_FILE}"
 
 
 class ZipFileWithPermissions(ZipFile):
@@ -67,10 +66,7 @@ def setup():
     os.system("go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest")
     os.system("go install google.golang.org/protobuf/cmd/protoc-gen-go@latest")
 
-    download_file(KOTLIN_GRPC_URL)
-    os.rename(f"./{KOTLIN_GRPC_FILE}", f"./scripts/{KOTLIN_GRPC_FILE}")
-
 
 def clean_setup():
     shutil.rmtree(PROTOC_BIN_FOLDER)
-    os.remove(f"./scripts/{KOTLIN_GRPC_FILE}")
+    shutil.rmtree(BUILD_FOLDER)

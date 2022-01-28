@@ -1,11 +1,11 @@
 import os
 import shutil
 
-
 PROTOC_BIN_FOLDER = "./protobin/bin"
 GRPC_FOLDER = "../grpc"
 GO_FOLDER = "../grpc/go"
 KOTLIN_FOLDER = "../grpc/kt"
+KOTLIN_BUILDER_FOLDER = "./build"
 
 
 def folder_exists(folder_path: str) -> bool:
@@ -71,18 +71,10 @@ def build_kotlin():
     """
     create_clean_folder(KOTLIN_FOLDER)
 
-    os.system(
-        f"""
-        export PATH="$PATH:$(go env GOPATH)/bin"
-
-        {PROTOC_BIN_FOLDER}/protoc --plugin=protoc-gen-grpckt=./scripts/gen-grpc-kotlin.sh \
-            --java_out={KOTLIN_FOLDER} --kotlin_out={KOTLIN_FOLDER} --grpckt_out={KOTLIN_FOLDER} \
-            --proto_path=./proto-files/ \
-            proto-files/user.proto
-        """
-    )
-
-    os.system(f"jar cvf lib-user-management-proto.jar -C {KOTLIN_FOLDER} .")
+    os.system("./gradlew build")
+    generated_file = os.listdir(f"{KOTLIN_BUILDER_FOLDER}/libs")[0]
+    os.system(f"mv {KOTLIN_BUILDER_FOLDER}/libs/{generated_file} {KOTLIN_FOLDER}")
+    os.system(f"rm -rf {KOTLIN_BUILDER_FOLDER}")
 
 
 def build():

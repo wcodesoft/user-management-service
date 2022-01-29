@@ -16,9 +16,24 @@ It's necessary to have Go and Kotlin compilers and libraries installed on your l
 
 ### Kotlin
 
-Kotlin generation is made by using gradle. We are wrapping everything with `gradle wrapper` so there is not much setup necessary for this language.
+Generation of `Kotlin` is made using gradle. We are wrapping everything with `gradle wrapper` so there is not 
+much setup necessary for this language.
 
 ### Golang
+
+To install `Go` on your system follow the instructions from the following link:
+https://go.dev/doc/install
+
+### Typescript
+
+For using `Typescript` it's necessary to have `Node` installed on the system.
+
+An easy way to install `Node` is installing `nvm` following the guide at https://github.com/nvm-sh/nvm.
+After the installation is finishes run the command:
+
+```bash
+nvm install --lts
+```
 
 ## Available commands
 
@@ -49,3 +64,37 @@ Clean all files that were generated or downloaded by the `build` execution.
 ```bash
 python builder.py clean
 ```
+
+## Usage
+
+This section show how to use the libraries that are generated for the builder script
+into your clients.
+
+### Kotlin
+
+The Kotlin library can be used from the `jar` generated or importing from a 
+artifactory. 
+ 
+An example of the usage on a `build.gradle.kts` file:
+
+```bash
+implementation("org.wcode.usermanagement:proto:0.0.1")
+```
+
+### Go
+
+The script will create a full Go module. If deployed at **Github**, to use 
+on a Go module you need to only update the imports definitions on the `go.mod` file.
+
+```go
+module service
+
+go 1.17
+
+require (
+	github.com/wcodesoft/user-management-service/grpc/go/user-management.proto v0.0.0-20220116232709-17487c730313
+	google.golang.org/grpc v1.43.0 //mandatory for using gRPC
+	google.golang.org/protobuf v1.27.1 //mandatory for using gRPC
+	...
+)
+``` 

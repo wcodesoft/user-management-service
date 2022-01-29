@@ -1,33 +1,12 @@
 import os
-import shutil
+from lib.file_utils import create_clean_folder, delete_folder, folder_exists
 
 PROTOC_BIN_FOLDER = "./protobin/bin"
 GRPC_FOLDER = "../grpc"
 GO_FOLDER = "../grpc/go"
 KOTLIN_FOLDER = "../grpc/kt"
 KOTLIN_BUILDER_FOLDER = "./build"
-
-
-def folder_exists(folder_path: str) -> bool:
-    """
-    Check if folder exists.
-
-    Args:
-        folder_path the path of the folder to look for.
-    """
-    return os.path.isdir(folder_path)
-
-
-def create_clean_folder(folder_path: str):
-    """
-    Create a clean folder removing the old one if it exists.py
-
-    Args:
-        folder_path the path of the folder to look up.
-    """
-    if folder_exists(folder_path):
-        shutil.rmtree(folder_path)
-    os.mkdir(folder_path)
+TYPESCRIPT_FOLDER = "../grpc/ts"
 
 
 def build_go():
@@ -42,7 +21,7 @@ def build_go():
         {PROTOC_BIN_FOLDER}/protoc \
             --go_out={GO_FOLDER} --go_opt=paths=source_relative \
             --go-grpc_out={GO_FOLDER} --go-grpc_opt=paths=source_relative \
-            proto-files/user.proto
+            proto-files/*.proto
         """
     )
 
@@ -77,15 +56,42 @@ def build_kotlin():
     os.system(f"rm -rf {KOTLIN_BUILDER_FOLDER}")
 
 
+def build_typescript():
+    create_clean_folder(TYPESCRIPT_FOLDER)
+
+    os.system(
+        f"""
+        {PROTOC_BIN_FOLDER}/protoc  --plugin=protoc-gen-grpc-web={PROTOC_BIN_FOLDER}/proto-gen-grpc-web \
+            --js_out=import_style=commonjs,binary:{TYPESCRIPT_FOLDER} \
+            --grpc-web_out=import_style=commonjs+dts,mode=grpcwebtext:{TYPESCRIPT_FOLDER} \
+            proto-files/*.proto
+        """
+    )
+
+    cwd = os.getcwd()
+
+    # Change the current working directory.
+    os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts/proto-files")
+
+    os.system("npm init --yes")
+
+    # Go back to previous directory.
+    os.chdir(cwd)
+
 def build():
     """Build a module for all supported languages."""
     if not folder_exists(PROTOC_BIN_FOLDER):
         raise FileNotFoundError("Run setup before building the protos")
 
     create_clean_folder(GRPC_FOLDER)
+
     build_kotlin()
     build_go()
+    build_typescript()
 
 
 def clean_build():
-    shutil.rmtree(GRPC_FOLDER)
+    """
+    Clean everything that was created by the build execution.
+    """
+    delete_folder(GRPC_FOLDER)

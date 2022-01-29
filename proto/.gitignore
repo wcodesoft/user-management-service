@@ -3,3 +3,8 @@ protoc-*
 build
 
 __pycache__
+node_modules
+
+package.json
+yarn-error.log
+yarn.lock

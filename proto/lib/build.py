@@ -9,7 +9,7 @@ KOTLIN_FOLDER = "../grpc/kt"
 KOTLIN_BUILDER_FOLDER = "./build"
 
 TYPESCRIPT_FOLDER = "../grpc/ts"
-TS_LIBRARY_VERSION = "0.0.1"
+TS_LIBRARY_VERSION = os.getenv('TS_LIBRARY_VERSION', "0.0.1")
 
 
 def build_go():
@@ -94,8 +94,6 @@ def build(languages: List[str]):
     """Build a module for all supported languages."""
     if not folder_exists(PROTOC_BIN_FOLDER):
         raise FileNotFoundError("Run setup before building the protos")
-
-    create_clean_folder(GRPC_FOLDER)
 
     if 'kt' in languages:
         print("Building protos for Kotlin.")

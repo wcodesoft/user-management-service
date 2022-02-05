@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_protos:
+  setup_builder:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/proto')
     permissions:
@@ -21,9 +21,15 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
       - uses: actions/setup-go@v2
       - uses: actions/setup-node@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+      - name: Install dependencies
+        working-directory: ./proto
+        run: pip install -r requirements.txt
       - name: Setup builder
         working-directory: ./proto
         run: python3 builder.py setup

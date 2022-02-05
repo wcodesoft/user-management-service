@@ -1,8 +1,8 @@
 import com.google.protobuf.gradle.*
 import org.gradle.kotlin.dsl.proto
 
-val protobufVersion = "3.19.3"
-val grpcVersion = "1.43.2"
+val protobufVersion = "3.19.4"
+val grpcVersion = "1.44.0"
 val grpcKotlinVersion = "1.2.1"
 
 plugins {

@@ -1,4 +1,5 @@
 import os
+from typing import List
 from lib.file_utils import create_clean_folder, delete_folder, folder_exists
 
 PROTOC_BIN_FOLDER = "./protobin/bin"
@@ -89,20 +90,28 @@ def build_typescript():
     os.chdir(cwd)
 
 
-def build():
+def build(languages: List[str]):
     """Build a module for all supported languages."""
     if not folder_exists(PROTOC_BIN_FOLDER):
         raise FileNotFoundError("Run setup before building the protos")
 
     create_clean_folder(GRPC_FOLDER)
 
-    build_kotlin()
-    build_go()
-    build_typescript()
+    if 'kt' in languages:
+        print("Building protos for Kotlin.")
+        build_kotlin()
+    
+    if 'go' in languages:
+        print("Building protos for Go.")
+        build_go()
+    
+    if 'ts' in languages:
+        print("Building protos for Typescript.")
+        build_typescript()
 
 
 def clean_build():
     """
     Clean everything that was created by the build execution.
     """
-    delete_folder(GRPC_FOLDER)
+    delete_folder(KOTLIN_FOLDER, TYPESCRIPT_FOLDER)

@@ -1,3 +1,4 @@
+from email.policy import default
 import lib.setup as lib_setup
 import lib.build as lib_build
 
@@ -23,13 +24,18 @@ def setup():
 
 
 @main.command()
-def build():
+@click.option('--language', '-l', multiple=True, help='Build proto to the current supported languages: ts (Typescript), kt (Kotlin), go (Go).')
+def build(language):
     """
     Build the necessary protobuf and gRPC files for Go and Kotlin.
     """
-    click.echo("Building protos from definitions in proto-files.")
+    click.echo("Start building protos from definitions in proto-files.")
+    if len(language) == 0:
+        build_languages = ['ts','kt','go']
+    else:
+        build_languages = language
     try:
-        lib_build.build()
+        lib_build.build(build_languages)
     except Exception as e:
         click.echo(f"Error: {e}")
 

@@ -3,7 +3,7 @@ import requests
 from zipfile import ZipFile, ZipInfo
 import os
 from lib.file_utils import delete_folder, delete_file
-from lib.check import check_go
+from lib.check import check_go, check_node
 
 PROTOC_BIN_FOLDER = "./protobin"
 BUILD_FOLDER = "./build"
@@ -94,6 +94,9 @@ def setup_node():
     Check if all dependencies for Typescript are installed on the system. And install
     the necessary libraries.
     """
+    if not check_node():
+        raise SystemError("Install Node before proceeding.")
+
     system = get_platform()
     if system == "mac":
         system = "darwin"

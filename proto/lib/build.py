@@ -6,7 +6,9 @@ GRPC_FOLDER = "../grpc"
 GO_FOLDER = "../grpc/go"
 KOTLIN_FOLDER = "../grpc/kt"
 KOTLIN_BUILDER_FOLDER = "./build"
+
 TYPESCRIPT_FOLDER = "../grpc/ts"
+TS_LIBRARY_VERSION = "0.0.1"
 
 
 def build_go():
@@ -71,12 +73,21 @@ def build_typescript():
     cwd = os.getcwd()
 
     # Change the current working directory.
-    os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts/proto-files")
+    os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts")
+    os.system("mkdir user-management")
+    os.system("mv proto-files user-management")
+    os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts/user-management")
 
-    os.system("npm init --yes")
+    os.system('npm config set init-license "MIT"')
+    os.system('npm config set init.author.name "Wcode"')
+
+    os.system("npm init --scope=@wcode --yes")
+    os.system(f"npm version {TS_LIBRARY_VERSION}")
+    os.system("npm install --save google-protobuf @types/google-protobuf @grpc/grpc-js")
 
     # Go back to previous directory.
     os.chdir(cwd)
+
 
 def build():
     """Build a module for all supported languages."""

@@ -80,9 +80,9 @@ def build_typescript():
     os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts/user-management")
 
     os.system('npm config set init-license "MIT"')
-    os.system('npm config set init.author.name "Wcode"')
+    os.system('npm config set init.author.name "Wcodesoft"')
 
-    os.system("npm init --scope=@wcode --yes")
+    os.system("npm init --scope=@wcodesoft --yes")
     os.system(f"npm version {TS_LIBRARY_VERSION}")
     os.system("npm install --save google-protobuf @types/google-protobuf @grpc/grpc-js")
 

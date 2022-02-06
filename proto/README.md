@@ -2,7 +2,7 @@
 
 All the protos definitions for the implemented service. 
 
-Currently `Kotlin` and `Go` are the languages being supported. More will be added in the future.
+Currently `Kotlin`, `Typescript` and `Go` are the languages being supported. More will be added in the future.
 
 ## Dependencies
 
@@ -55,7 +55,15 @@ Will build the libraries for client and service for the supported languages.
 python builder.py build
 ```
 
-The result from the build can be found at folder `gprc`.
+The result from the build can be found at folder `gprc`. If no argument is passed to this 
+command the supported languages will be created. 
+
+To select specific languages you need to add the `-l` with the language code you 
+want to build the gRPC and protos:
+
+```bash
+python builder.py build -l ts -l go -l kt
+```
 
 ### Clean
 

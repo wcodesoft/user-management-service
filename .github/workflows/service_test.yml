@@ -23,4 +23,21 @@ jobs:
 
       - name: Run tests
         working-directory: ./service/tests
-        run: go test -v 
+        run: go test -v -coverprofile="coverage.out" -covermode=count -json > report.json
+
+      - name: Sonarcloud scan
+        working-directory: ./service
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
+        with:
+          projectBaseDir: service
+          args: >
+            -Dsonar.organization = ${{ secrets.SONAR_CLOUD_ORGANIZATION }}
+            -Dsonar.projectKey = ${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.test.exclusions=tests/**
+            -Dsonar.tests=tests/
+            -Dsonar.verbose=true
+            -Dsonar.go.tests.reportPaths=tests/report.json
+            -Dsonar.go.coverage.reportPaths=tests/coverage.out

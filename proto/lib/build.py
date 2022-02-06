@@ -87,7 +87,7 @@ def build_typescript():
   "main": "index.js",
   "scripts": {{
     "test": "echo 'Error: no test specified' && exit 1"
- }},
+  }},
   "keywords": [],
   "author": "Wcodesoft",
   "license": "MIT",

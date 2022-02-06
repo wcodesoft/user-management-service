@@ -47,7 +47,7 @@ jobs:
         env:
           TS_LIBRARY_VERSION: ${{ steps.get_version.outputs.VERSION }}
       - name: Publish typescript
-        working-directory: ./grpc/ts/user-management
+        working-directory: ./grpc/ts/user-management-proto
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

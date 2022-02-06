@@ -75,13 +75,13 @@ def build_typescript():
 
     # Change the current working directory.
     os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts")
-    os.system("mkdir user-management")
-    os.system("mv proto-files user-management")
-    os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts/user-management")
+    os.system("mkdir user-management-proto")
+    os.system("mv proto-files user-management-proto")
+    os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts/user-management-proto")
 
     with open("package.json", "w") as f_out:
         f_out.write(f"""{{
-  "name": "@wcodesoft/user-management",
+  "name": "@wcodesoft/user-management-proto",
   "version": "{TS_LIBRARY_VERSION}",
   "description": "",
   "main": "index.js",

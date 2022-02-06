@@ -1,4 +1,3 @@
-from email.policy import default
 import lib.setup as lib_setup
 import lib.build as lib_build
 

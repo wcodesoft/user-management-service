@@ -79,12 +79,31 @@ def build_typescript():
     os.system("mv proto-files user-management")
     os.chdir(f"{os.path.split(cwd)[0]}/grpc/ts/user-management")
 
-    os.system('npm config set init-license "MIT"')
-    os.system('npm config set init.author.name "Wcodesoft"')
+    with open("package.json", "w") as f_out:
+        f_out.write(f"""{{
+  "name": "@wcodesoft/user-management",
+  "version": "{TS_LIBRARY_VERSION}",
+  "description": "",
+  "main": "index.js",
+  "scripts": {{
+    "test": "echo 'Error: no test specified' && exit 1"
+ }},
+  "keywords": [],
+  "author": "Wcodesoft",
+  "license": "MIT",
+  "dependencies": {{
+    "@grpc/grpc-js": "^1.5.4",
+    "@types/google-protobuf": "^3.15.5",
+    "google-protobuf": "^3.19.4"
+  }},
+  "repository": {{
+    "type": "git",
+    "url": "https://github.com/wcodesoft/user-management-service.git"
+  }}
+}}
+        """)
 
-    os.system("npm init --scope=@wcodesoft --yes")
-    os.system(f"npm version {TS_LIBRARY_VERSION}")
-    os.system("npm install --save google-protobuf @types/google-protobuf @grpc/grpc-js")
+    os.system("npm install")
 
     # Go back to previous directory.
     os.chdir(cwd)
@@ -98,11 +117,11 @@ def build(languages: List[str]):
     if 'kt' in languages:
         print("Building protos for Kotlin.")
         build_kotlin()
-    
+
     if 'go' in languages:
         print("Building protos for Go.")
         build_go()
-    
+
     if 'ts' in languages:
         print("Building protos for Typescript.")
         build_typescript()

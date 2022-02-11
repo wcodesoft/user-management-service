@@ -23,7 +23,7 @@ jobs:
 
       - name: Run tests
         working-directory: ./service
-        run: go test "./.." -v -coverprofile="coverage.out" -covermode=count -json > report.json
+        run: go test "./..." -v -coverprofile="coverage.out" -covermode=count -json > report.json
 
       - name: Sonarcloud scan
         uses: sonarsource/sonarcloud-github-action@master

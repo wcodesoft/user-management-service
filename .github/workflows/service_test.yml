@@ -30,8 +30,8 @@ jobs:
         with:
           projectBaseDir: service
           args: >
-            -Dsonar.organization = ${{ secrets.SONAR_CLOUD_ORGANIZATION }}
-            -Dsonar.projectKey = ${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ secrets.SONAR_CLOUD_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
             -Dsonar.test.exclusions=tests/**
             -Dsonar.tests=tests/
             -Dsonar.verbose=true
